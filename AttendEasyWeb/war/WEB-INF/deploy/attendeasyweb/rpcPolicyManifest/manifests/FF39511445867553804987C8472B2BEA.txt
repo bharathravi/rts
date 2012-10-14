@@ -1,0 +1,2 @@
+serviceClass: com.example.attendeasy.client.GreetingService
+path: BDA1D0E0280FC000664ADF781D712EE8.gwt.rpc

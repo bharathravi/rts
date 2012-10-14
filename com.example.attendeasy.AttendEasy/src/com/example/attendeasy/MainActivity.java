@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
         NdefMessage msg = new NdefMessage(
         		new NdefRecord[] {
         				createMimeRecord("application/com.example.android.beam", text.getBytes())
-        				//,NdefRecord.createApplicationRecord("com.example.attendeasy.AttendEasyServer")
+        				,NdefRecord.createApplicationRecord("com.example.attendeasyserver")
         		});
         return msg;
 

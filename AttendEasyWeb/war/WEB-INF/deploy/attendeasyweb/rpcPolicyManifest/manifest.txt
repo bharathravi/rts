@@ -1,0 +1,3 @@
+# Module attendeasyweb
+# RPC service class, partial path of RPC policy file
+com.example.attendeasy.client.GreetingService, BDA1D0E0280FC000664ADF781D712EE8.gwt.rpc
