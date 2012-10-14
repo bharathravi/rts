@@ -9,17 +9,22 @@ import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.app.Activity;
 import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements CreateNdefMessageCallback, 
     OnNdefPushCompleteCallback {
 
 	NfcAdapter nfcAdapter;
 	TextView infoText;
+	 private static final int MESSAGE_SENT = 1;
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,8 +68,8 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
          */
         NdefMessage msg = new NdefMessage(
         		new NdefRecord[] {
-        				createMimeRecord("application/com.example.android.beam", text.getBytes()),
-        				NdefRecord.createApplicationRecord("com.example.AttendeasyServer")
+        				createMimeRecord("application/com.example.android.beam", text.getBytes())
+        				//,NdefRecord.createApplicationRecord("com.example.attendeasy.AttendEasyServer")
         		});
         return msg;
 
@@ -85,6 +90,19 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
 	
 	public void onNdefPushComplete(NfcEvent event) {
 		// TODO Auto-generated method stub
-		
+		mHandler.obtainMessage(MESSAGE_SENT).sendToTarget();
 	}
+	
+	/** This handler receives a message from onNdefPushComplete */
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MESSAGE_SENT:
+                Toast.makeText(getApplicationContext(), "Message sent!", Toast.LENGTH_LONG).show();
+                break;
+            }
+        }
+    };
+
 }

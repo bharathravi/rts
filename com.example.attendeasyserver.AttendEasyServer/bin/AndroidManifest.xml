@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.attendeasyserver"
+    package="com.example.attendeasy"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="AttendEasyServer"
+            android:name="com.example.attendeasy.ServerMain"
             android:label="@string/title_activity_server_main" >
             
             <intent-filter>
