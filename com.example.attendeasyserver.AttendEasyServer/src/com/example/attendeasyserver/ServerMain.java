@@ -7,9 +7,13 @@ import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Editable;
 import android.text.format.Time;
 import android.view.Menu;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ServerMain extends Activity {
@@ -22,9 +26,13 @@ public class ServerMain extends Activity {
         setContentView(R.layout.main_layout);
         
         infoText = (TextView) findViewById(R.id.infotext);
-       // db = new Database(this);
+        this.deleteDatabase("attendeasy");
+        db = new Database(this);
         
         // TODO: Get cache of student list from server
+        Time now = new Time();
+        now.setToNow();
+        //processAttendance("12345", now);        
     }
 
     @Override
@@ -58,7 +66,12 @@ public class ServerMain extends Activity {
         NdefMessage msg = (NdefMessage) rawMsgs[0];
         // record 0 contains the MIME type, record 1 is the AAR, if present
         
-        infoText.setText(new String(msg.getRecords()[0].getPayload()));
+        try {
+			infoText.setText(Protector.decrypt(msg.getRecords()[0].getPayload()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         assert(isMessageValid(msg));
         String imei = getImei(msg);
@@ -75,18 +88,20 @@ public class ServerMain extends Activity {
 	private void processAttendance(String imei, Time time) {
 		Time now = new Time();
         now.setToNow();
-        
+      
         if (db.exists(imei)) {
+        
             verifyAttendance(imei, time);		        	
         } else {
-        	processNewStudent(imei, time);
+        
+        	showNewStudentDialog(imei, time);
         }
          
 	}
 
-	private void processNewStudent(String imei, Time time) {
+	private void processNewStudent(String gtid, String imei, Time time) {
 		// TODO:Message/popup to get gtid and name
-		String gtid = "";
+		
 		db.insertNew(imei, gtid);
 	}
 
@@ -105,12 +120,44 @@ public class ServerMain extends Activity {
 
 	private String getImei(NdefMessage msg) {
 		// TODO Auto-generated method stub
-		return null;
+		return "12345";
 	}
 
 	private Time getTime(NdefMessage msg) {
 		// TODO Auto-generated method stub
-		return null;
+		Time time = new Time();
+		time.setToNow();
+		return  time;
+	}
+	
+	private void showNewStudentDialog(final String imei, final Time time) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("New Student Entry");
+		alert.setMessage("Enter your GTID");
+
+		// Set an EditText view to get user input 
+		final EditText input = new EditText(this);
+		alert.setView(input);
+		
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		public void onClick(DialogInterface dialog, int whichButton) {
+		  Editable value = input.getText();
+		  String gtid = value.toString();
+		  processNewStudent(gtid, imei, time);
+		  
+		//  processAttendance("12345", time);
+		  }
+		});
+
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		  public void onClick(DialogInterface dialog, int whichButton) {
+		    // Canceled.
+		  }
+		});
+		
+		alert.show();
 	}
 
+	
 }

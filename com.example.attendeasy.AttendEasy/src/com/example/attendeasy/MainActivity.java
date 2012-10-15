@@ -2,6 +2,8 @@ package com.example.attendeasy;
 
 import java.nio.charset.Charset;
 
+import javax.crypto.EncryptedPrivateKeyInfo;
+
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -66,13 +68,22 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
          * activity starts when receiving a beamed message. For now, this code
          * uses the tag dispatch system.
          */
+        
+        try {
+			byte[] encryptedText = Protector.encrypt(text);
+		
         NdefMessage msg = new NdefMessage(
         		new NdefRecord[] {
-        				createMimeRecord("application/com.example.android.beam", text.getBytes())
+        				createMimeRecord("application/com.example.android.beam", encryptedText)
         				,NdefRecord.createApplicationRecord("com.example.attendeasyserver")
         		});
         return msg;
-
+        } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+                
 	}
 
 	/**
