@@ -4,5 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_server_main">AttendEasy Server</string>
-
+    <string name="title_activity_options_main">AttendEasy Server Options</string>
+    <string name="class_prompt">Choose a Class</string>
+    <string name="class_spinner_text">Choose Class</string>
+   
 </resources>

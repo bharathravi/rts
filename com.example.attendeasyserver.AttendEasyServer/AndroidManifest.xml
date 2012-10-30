@@ -29,5 +29,10 @@
             </intent-filter>
             
         </activity>
+        
+        <activity
+            android:name="com.example.attendeasyserver.MenuActivity"
+            android:label="@string/title_activity_options_main" >                                  
+        </activity>
     </application>
 </manifest>

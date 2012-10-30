@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
 	NfcAdapter nfcAdapter;
 	TextView infoText;
 	 private static final int MESSAGE_SENT = 1;
-
+    private static final String CHECK_STRING = "Check this message";
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,7 @@ public class MainActivity extends Activity implements CreateNdefMessageCallback,
 		Time time = new Time();
         time.setToNow();
         TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        String text = ("Beam me up!\n\n" +
-                "Beam Time: " + time.format("%H:%M:%S") +
-                "IMEI Number:" + tm.getDeviceId());
+        String text = CHECK_STRING + time.toMillis(false) + tm.getDeviceId();
         
         /**
          * The Android Application Record (AAR) is commented out. When a device
