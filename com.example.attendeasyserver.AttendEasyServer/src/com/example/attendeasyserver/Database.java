@@ -117,6 +117,11 @@ public class Database extends SQLiteOpenHelper {
 		}
 	}
 	
+	String getCsv(int classId) {
+	  
+	  
+	}
+	
 	public long insertNewStudent(String imei, String gtid, int classId) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -192,6 +197,7 @@ public class Database extends SQLiteOpenHelper {
 		if (cursor.moveToFirst()) {
 			int timeColumnId = cursor.getColumnIndex(timeColumn);
 			long timeValue =  cursor.getLong(timeColumnId);
+						
 			time = new Time();
 			time.set(timeValue);
 			

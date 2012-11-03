@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:columnCount="3"
+    android:orientation="vertical" >
+
+           <TextView
+            android:id="@+id/pin_instructions_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter a 6-digit number as a Pin. "
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+           <Space
+        android:layout_width="1dp"
+        android:layout_height="21dp"
+        android:layout_column="0"
+        android:layout_row="0" />
+           
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="151dp"
+            android:columnCount="3" >
+            
+            <EditText
+                android:id="@+id/new_pin"
+                android:layout_column="1"
+                android:layout_gravity="left"
+                android:layout_row="3"                
+                android:ems="6"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/new_pin_label"
+                android:layout_column="0"
+                android:layout_gravity="left"
+                android:layout_row="3"
+                android:text="New Pin"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+           <EditText
+                android:id="@+id/reenter_pin"
+                android:layout_column="1"
+                android:layout_gravity="left"
+                android:layout_row="5"                
+                android:ems="6"
+                android:inputType="textPassword" />
+            
+            <TextView
+                android:id="@+id/reenter_pin_label"
+                android:layout_column="0"
+                android:layout_gravity="left"
+                android:layout_row="5"
+                android:text="Re-enter New Pin"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+        </GridLayout>
+
+               <Space
+        android:layout_width="1dp"
+        android:layout_height="21dp"
+        android:layout_column="0"
+        android:layout_row="0" />
+           
+                      <Space
+        android:layout_width="1dp"
+        android:layout_height="21dp"
+        android:layout_column="0"
+        android:layout_row="0" />
+           
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:text="Save Pin" />
+    
+</LinearLayout>

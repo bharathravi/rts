@@ -7,5 +7,6 @@
     <string name="title_activity_options_main">AttendEasy Server Options</string>
     <string name="class_prompt">Choose a Class</string>
     <string name="class_spinner_text">Choose Class</string>
-   
+    
+    <string name="add_new_class_string">Add New Class</string>
 </resources>

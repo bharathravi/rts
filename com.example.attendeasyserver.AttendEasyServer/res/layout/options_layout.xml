@@ -5,6 +5,13 @@
     android:columnCount="3"
     android:orientation="vertical" >
 
+     <Space
+        android:layout_width="21dp"
+        android:layout_height="1dp"
+        android:layout_column="0"
+        android:layout_row="0" />
+    
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -13,7 +20,7 @@
             android:id="@+id/current_class_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current selected Class:"
+            android:text="Current selected Class: "
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -23,18 +30,24 @@
             android:text=""
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
+    
 
-        <Space
+    <Space
         android:layout_width="21dp"
         android:layout_height="1dp"
         android:layout_column="0"
         android:layout_row="0" />
 
-    <Space
+        <Space
         android:layout_width="1dp"
         android:layout_height="21dp"
         android:layout_column="0"
         android:layout_row="0" />
+    
+    <View   android:id="@+id/divider1"
+        android:layout_height="2dp"
+        android:layout_width="fill_parent"
+        android:background="#ffffff" />
     
     <TextView
         android:id="@+id/class_select_text"
@@ -46,15 +59,41 @@
     <ListView
         android:id="@+id/class_select_list"
         android:layout_width="match_parent"
-        android:layout_height="294dp"
-        android:layout_weight="1.19"
+        android:layout_height="0dip"
+        android:layout_weight="0.44"
         android:textAppearance="?android:attr/textAppearanceMedium" >
     </ListView>
 
+    <View   android:id="@+id/divider2"
+        android:layout_height="2dp"
+        android:layout_width="fill_parent"
+        android:background="#ffffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/class_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.38"
+            android:text="@string/add_new_class_string" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:text="Export Database" />
+
+    </LinearLayout>
+    
     <Button
-        android:id="@+id/class_add_button"
+        android:id="@+id/change_pin_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add New Class" />
+        android:text="Change Pin" />
 
+    
 </LinearLayout>
