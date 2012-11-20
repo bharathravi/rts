@@ -117,11 +117,6 @@ public class Database extends SQLiteOpenHelper {
 		}
 	}
 	
-	String getCsv(int classId) {
-	  
-	  
-	}
-	
 	public long insertNewStudent(String imei, String gtid, int classId) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();

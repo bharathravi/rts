@@ -33,7 +33,8 @@ public class ServerMain extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.main_layout);
+    setContentView(R.layout.main_layout);    
+    
     me = this;
     SharedPreferences settings = getSharedPreferences(Constants.PREFS_NAME, 0);
 
