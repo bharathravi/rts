@@ -123,33 +123,39 @@ public class Database extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery("SELECT * FROM " + STUDENTS_TABLE_NAME 
 				+ " WHERE " + classIdColumn + "=" + classId, null);
 		
+			
 		
-		
+		String csv = "";
 		cursor.moveToFirst();
 		int imeiColId = cursor.getColumnIndex(imeiColumn);
+		int gtidColID = cursor.getColumnIndex(gtidColumn);
 		
 		if (cursor.getCount() > 0) {				
 			  do {
 				  String imei = cursor.getString(imeiColId);
+				  String gtid = cursor.getString(gtidColID);
+				  csv += gtid;
 				  Cursor cursor2 = db.rawQuery("SELECT * FROM " + ATTENDANCE_TABLE_NAME 
 							+ " WHERE " + imei + "=" + imeiColumn, null);
 				  cursor2.moveToFirst();
 				  int dateID = cursor.getColumnIndex(timeColumn);
 				  
 				  if(cursor2.getCount() > 0) {
-					  double attendedDate = cursor2.getDouble(dateID);
-					  
-					  
+					  do{
+						  double attendedDate = cursor2.getDouble(dateID);
+						  csv += ',' + attendedDate;
+					  }
+					  while(cursor2.moveToNext());					  					  
 				  }
 				  
-				  
+				  csv += '\n';  
 			  } while (cursor.moveToNext());
 			}
 		
-		
+		return csv;
 	  
 	}
-	
+
 	public long insertNewStudent(String imei, String gtid, int classId) {
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
