@@ -1,5 +1,9 @@
 package com.example.attendeasyserver;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -11,8 +15,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.format.Time;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -76,9 +82,66 @@ public class MenuActivity extends Activity {
     addListClickListeners();
     addNewClassClickListener();
     addPinClickListener();
+    addExportButtonClickListener();
+    
   }
 
-  private void addListClickListeners() {
+  private boolean assertMedia() {
+	  boolean mExternalStorageAvailable = false;
+	  boolean mExternalStorageWriteable = false;
+	  String state = Environment.getExternalStorageState();
+
+	  if (Environment.MEDIA_MOUNTED.equals(state)) {
+	      // We can read and write the media
+	      mExternalStorageAvailable = mExternalStorageWriteable = true;
+	  } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	      // We can only read the media
+	      mExternalStorageAvailable = true;
+	      mExternalStorageWriteable = false;
+	      System.out.println("External Media is not Writeable.");
+	      Toast.makeText(me, "External Media is not Writeable.", Toast.LENGTH_LONG).show();
+	  } else {
+	      // Something else is wrong. It may be one of many other states, but all we need
+	      //  to know is we can neither read nor write
+	      mExternalStorageAvailable = mExternalStorageWriteable = false;
+	      Toast.makeText(me, "External Media is not Available.", Toast.LENGTH_LONG).show();
+	  }
+	  return mExternalStorageWriteable;
+	
+}
+
+  private void fileWrite(String gotcsv) {
+		File file = new File(getExternalFilesDir(null), "testfile.csv");
+
+	    try {
+	    	
+	        OutputStream os = new FileOutputStream(file);
+	        byte[] data = gotcsv.getBytes();
+	        os.write(data);
+	        os.close();
+	    } catch (IOException e) {
+	    	Toast.makeText(me, "Writing to file failed.", Toast.LENGTH_LONG).show();
+	    }
+		
+}
+   
+  
+private void addExportButtonClickListener() {
+	  Button newClassButton = (Button) findViewById(R.id.export_button);
+	    newClassButton.setOnClickListener(new OnClickListener() {
+	      public void onClick(View v) {
+	    	  String gotcsv = db.getCsv(1);
+	    	  boolean mediaWriteable = assertMedia();
+	    	  if(mediaWriteable) {
+	    		  fileWrite (gotcsv);
+	    	  }
+	    	  
+	      } 
+	      });
+	     	
+}
+
+private void addListClickListeners() {
     // Short press listener
     classSelectList.setOnItemClickListener(new OnItemClickListener() {
 
