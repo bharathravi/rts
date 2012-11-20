@@ -74,7 +74,7 @@ public class Protector {
       
       // Set an EditText view to get user input
       final EditText pin = new EditText(context);
-      pin.setTransformationMethod(PasswordTransformationMethod.getInstance());
+      pin.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
       pin.setGravity(Gravity.CENTER | Gravity.BOTTOM);
       pin.setEms(6);
       
@@ -82,7 +82,7 @@ public class Protector {
       repinText.setText("Re-enter Pin:");
       
       final EditText reenter_pin = new EditText(context);
-      reenter_pin.setTransformationMethod(PasswordTransformationMethod.getInstance());
+      reenter_pin.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
       reenter_pin.setGravity(Gravity.CENTER | Gravity.BOTTOM);
       reenter_pin.setEms(6);
             
@@ -97,9 +97,11 @@ public class Protector {
       layout2.addView(reenter_pin);
             
       LinearLayout layout = new LinearLayout(context);
+      layout.setOrientation(LinearLayout.VERTICAL);
       layout.addView(layout1);
       layout.addView(layout2);
       alert.setView(layout);
+      
       alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int whichButton) {
           String value1 = pin.getText().toString();
@@ -138,15 +140,17 @@ public class Protector {
       try {
         Integer.parseInt(value1);
       } catch (NumberFormatException e) {
-        Toast.makeText(context, "Pin must be a 6 digit number!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Pin must be a Number!", Toast.LENGTH_LONG).show();
         return false;
       }
       
       if (value1.equals(value2)) {
         return true;
+      } else {
+        Toast.makeText(context, "Pins entered did not match!", Toast.LENGTH_LONG).show();
+        return false;
       }
-      
-      return false;          
+                 
     }
     
     public static boolean savePin(final SharedPreferences preferences, String pin) {
@@ -173,6 +177,8 @@ public class Protector {
 
       // Set an EditText view to get user input
       final EditText input = new EditText(context);
+      input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+      input.setEms(6);
       
       alert.setView(input);
       alert.setCancelable(false);

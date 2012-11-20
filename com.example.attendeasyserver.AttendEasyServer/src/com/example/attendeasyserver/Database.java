@@ -136,14 +136,14 @@ public class Database extends SQLiteOpenHelper {
 				  String gtid = cursor.getString(gtidColID);
 				  csv += gtid;
 				  Cursor cursor2 = db.rawQuery("SELECT * FROM " + ATTENDANCE_TABLE_NAME 
-							+ " WHERE " + imei + "=" + imeiColumn, null);
+							+ " WHERE " + imeiColumn + "=" + imei + " AND " + classIdColumn + "=" + classId, null);
 				  cursor2.moveToFirst();
-				  int dateID = cursor.getColumnIndex(timeColumn);
+				  int dateID = cursor2.getColumnIndex(timeColumn);
 				  
 				  if(cursor2.getCount() > 0) {
 					  do{
-						  double attendedDate = cursor2.getDouble(dateID);
-						  csv += ',' + attendedDate;
+						  String attendedDate = cursor2.getString(dateID);
+						  csv += "," + attendedDate;
 					  }
 					  while(cursor2.moveToNext());					  					  
 				  }
@@ -152,8 +152,7 @@ public class Database extends SQLiteOpenHelper {
 			  } while (cursor.moveToNext());
 			}
 		
-		return csv;
-	  
+		return csv;	  
 	}
 
 	public long insertNewStudent(String imei, String gtid, int classId) {
