@@ -1,5 +1,6 @@
 package com.example.attendeasyserver;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +119,34 @@ public class Database extends SQLiteOpenHelper {
 	}
 	
 	String getCsv(int classId) {
-	  
+		SQLiteDatabase db = getReadableDatabase();		
+		Cursor cursor = db.rawQuery("SELECT * FROM " + STUDENTS_TABLE_NAME 
+				+ " WHERE " + classIdColumn + "=" + classId, null);
+		
+		
+		
+		cursor.moveToFirst();
+		int imeiColId = cursor.getColumnIndex(imeiColumn);
+		
+		if (cursor.getCount() > 0) {				
+			  do {
+				  String imei = cursor.getString(imeiColId);
+				  Cursor cursor2 = db.rawQuery("SELECT * FROM " + ATTENDANCE_TABLE_NAME 
+							+ " WHERE " + imei + "=" + imeiColumn, null);
+				  cursor2.moveToFirst();
+				  int dateID = cursor.getColumnIndex(timeColumn);
+				  
+				  if(cursor2.getCount() > 0) {
+					  double attendedDate = cursor2.getDouble(dateID);
+					  
+					  
+				  }
+				  
+				  
+			  } while (cursor.moveToNext());
+			}
+		
+		
 	  
 	}
 	
