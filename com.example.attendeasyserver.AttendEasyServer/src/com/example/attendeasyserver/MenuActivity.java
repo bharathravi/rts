@@ -86,9 +86,7 @@ public class MenuActivity extends Activity {
     populateClassList();
     addListClickListeners();
     addNewClassClickListener();
-    addPinClickListener();
-    addExportButtonClickListener();
-
+    addPinClickListener();    
   }
 
   private boolean assertMedia() {
@@ -131,20 +129,6 @@ public class MenuActivity extends Activity {
 
   }
 
-
-  private void addExportButtonClickListener() {
-    Button newClassButton = (Button) findViewById(R.id.export_button);
-    newClassButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        String gotcsv = db.getCsv(1);
-        boolean mediaWriteable = assertMedia();
-        if(mediaWriteable) {
-          fileWrite (gotcsv);
-        }
-
-      } 
-    });
-  }
 
   private void addListClickListeners() {
     // Short press listener

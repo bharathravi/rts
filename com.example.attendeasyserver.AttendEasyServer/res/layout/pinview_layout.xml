@@ -8,7 +8,7 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="151dp"
+            android:layout_height="100dp"
             android:columnCount="3" >
             
             <EditText
