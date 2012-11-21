@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -17,6 +19,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
+import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.Pair;
@@ -110,8 +113,13 @@ public class MenuActivity extends Activity {
 	
 }
 
-  private void fileWrite(String gotcsv) {
-		File file = new File(getExternalFilesDir(null), "testfile.csv");
+  private void fileWrite(String gotcsv, int classID) {
+	  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	   //get current date time with Date()
+	   Date date = new Date(); 
+	   String file_name = "";
+	    file_name = file_name + "_" +  dateFormat.format(date);
+		File file = new File(getExternalFilesDir(null), file_name);
 
 	    try {
 	    	
@@ -125,6 +133,14 @@ public class MenuActivity extends Activity {
 		
 }
    
+  private void shareMedia() {
+		
+		
+	
+	  
+	  
+    } 
+  
   
 private void addExportButtonClickListener() {
 	  Button newClassButton = (Button) findViewById(R.id.export_button);
@@ -133,13 +149,17 @@ private void addExportButtonClickListener() {
 	    	  String gotcsv = db.getCsv(1);
 	    	  boolean mediaWriteable = assertMedia();
 	    	  if(mediaWriteable) {
-	    		  fileWrite (gotcsv);
+	    		  fileWrite (gotcsv, 1);
+	    		  shareMedia();
 	    	  }
 	    	  
-	      } 
-	      });
-	     	
+	      }
+	    });
 }
+	    
+		
+	     	
+
 
 private void addListClickListeners() {
     // Short press listener
