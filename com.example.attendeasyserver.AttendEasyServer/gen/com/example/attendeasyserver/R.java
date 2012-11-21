@@ -18,24 +18,27 @@ public final class R {
         public static final int wavy_blue_background2=0x7f020004;
     }
     public static final class id {
-        public static final int button1=0x7f070001;
-        public static final int change_pin_button=0x7f070010;
-        public static final int class_add_button=0x7f07000e;
-        public static final int class_select_list=0x7f07000c;
-        public static final int class_select_text=0x7f07000b;
-        public static final int current_class_name=0x7f070009;
-        public static final int current_class_text=0x7f070008;
-        public static final int divider1=0x7f07000a;
-        public static final int divider2=0x7f07000d;
-        public static final int export_button=0x7f07000f;
-        public static final int infotext=0x7f070000;
-        public static final int menu_settings=0x7f070011;
-        public static final int new_pin=0x7f070003;
+        public static final int button1=0x7f070000;
+        public static final int change_pin_button=0x7f07000e;
+        public static final int class_add_button=0x7f07000d;
+        public static final int class_select_list=0x7f07000b;
+        public static final int class_select_text=0x7f07000a;
+        public static final int current_class_name=0x7f070008;
+        public static final int current_class_text=0x7f070007;
+        public static final int delete_class=0x7f070014;
+        public static final int divider1=0x7f070009;
+        public static final int divider2=0x7f07000c;
+        public static final int export_data=0x7f070013;
+        public static final int infotext=0x7f070001;
+        public static final int menu_settings=0x7f070012;
+        public static final int new_pin=0x7f07000f;
+        public static final int new_pin1=0x7f070003;
         public static final int new_pin_label=0x7f070004;
-        public static final int pin_instructions_label=0x7f070002;
-        public static final int reenter_pin=0x7f070005;
+        public static final int reenter_pin=0x7f070010;
+        public static final int reenter_pin1=0x7f070005;
         public static final int reenter_pin_label=0x7f070006;
-        public static final int save_button=0x7f070007;
+        public static final int save_button=0x7f070011;
+        public static final int textView1=0x7f070002;
     }
     public static final class layout {
         public static final int main_layout=0x7f030000;
@@ -45,6 +48,7 @@ public final class R {
     }
     public static final class menu {
         public static final int main_layout=0x7f060000;
+        public static final int popup_menu=0x7f060001;
     }
     public static final class string {
         public static final int add_new_class_string=0x7f040007;

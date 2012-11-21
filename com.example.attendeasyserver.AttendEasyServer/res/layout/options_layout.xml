@@ -22,6 +22,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Current selected Class: "
+            android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
@@ -29,6 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
     
@@ -55,14 +63,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your classes:"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="1"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ListView
         android:id="@+id/class_select_list"
+        style="@string/add_new_class_string"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="0.44"
         android:textAppearance="?android:attr/textAppearanceMedium" >
+
     </ListView>
 
     <View   android:id="@+id/divider2"
@@ -79,21 +93,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.38"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
             android:text="@string/add_new_class_string" />
 
-        <Button
-            android:id="@+id/export_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="Export Database" />
-
+        
     </LinearLayout>
     
     <Button
         android:id="@+id/change_pin_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            
         android:text="Change Pin" />
 
     

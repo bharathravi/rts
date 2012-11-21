@@ -12,10 +12,12 @@ import java.util.concurrent.Callable;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -23,6 +25,7 @@ import android.text.format.DateFormat;
 import android.text.format.Time;
 import android.util.Log;
 import android.util.Pair;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -32,7 +35,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,36 +90,35 @@ public class MenuActivity extends Activity {
     populateClassList();
     addListClickListeners();
     addNewClassClickListener();
-    addPinClickListener();
-    addExportButtonClickListener();
-    
+    addPinClickListener();    
   }
 
   private boolean assertMedia() {
-	  boolean mExternalStorageAvailable = false;
-	  boolean mExternalStorageWriteable = false;
-	  String state = Environment.getExternalStorageState();
+    boolean mExternalStorageAvailable = false;
+    boolean mExternalStorageWriteable = false;
+    String state = Environment.getExternalStorageState();
 
-	  if (Environment.MEDIA_MOUNTED.equals(state)) {
-	      // We can read and write the media
-	      mExternalStorageAvailable = mExternalStorageWriteable = true;
-	  } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-	      // We can only read the media
-	      mExternalStorageAvailable = true;
-	      mExternalStorageWriteable = false;
-	      System.out.println("External Media is not Writeable.");
-	      Toast.makeText(me, "External Media is not Writeable.", Toast.LENGTH_LONG).show();
-	  } else {
-	      // Something else is wrong. It may be one of many other states, but all we need
-	      //  to know is we can neither read nor write
-	      mExternalStorageAvailable = mExternalStorageWriteable = false;
-	      Toast.makeText(me, "External Media is not Available.", Toast.LENGTH_LONG).show();
-	  }
-	  return mExternalStorageWriteable;
-	
-}
+    if (Environment.MEDIA_MOUNTED.equals(state)) {
+      // We can read and write the media
+      mExternalStorageAvailable = mExternalStorageWriteable = true;
+    } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+      // We can only read the media
+      mExternalStorageAvailable = true;
+      mExternalStorageWriteable = false;
+      System.out.println("External Media is not Writeable.");
+      Toast.makeText(me, "External Media is not Writeable.", Toast.LENGTH_LONG).show();
+    } else {
+      // Something else is wrong. It may be one of many other states, but all we need
+      //  to know is we can neither read nor write
+      mExternalStorageAvailable = mExternalStorageWriteable = false;
+      Toast.makeText(me, "External Media is not Available.", Toast.LENGTH_LONG).show();
+    }
+    return mExternalStorageWriteable;
 
-  private void fileWrite(String gotcsv, int classID) {
+  }
+
+
+  private String fileWrite(String gotcsv, int classID) {
 	  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	   //get current date time with Date()
 	   Date date = new Date(); 
@@ -131,12 +136,19 @@ public class MenuActivity extends Activity {
 	    	Toast.makeText(me, "Writing to file failed.", Toast.LENGTH_LONG).show();
 	    }
 		
+	    return file_name;
 }
    
-  private void shareMedia() {
-		
-		
+  private void shareMedia(String fileName) {
 	
+	  File file = new File(getExternalFilesDir(null), fileName);
+	  
+	  Uri uriToFile = Uri.fromFile(file);
+	  Intent shareIntent = new Intent();
+	  shareIntent.setAction(Intent.ACTION_SEND);
+	  shareIntent.putExtra(Intent.EXTRA_STREAM, uriToFile);
+	  shareIntent.setType("*/*");
+	  startActivity(Intent.createChooser(shareIntent, "get-file"));
 	  
 	  
     } 
@@ -146,11 +158,12 @@ private void addExportButtonClickListener() {
 	  Button newClassButton = (Button) findViewById(R.id.export_button);
 	    newClassButton.setOnClickListener(new OnClickListener() {
 	      public void onClick(View v) {
+	    	  String nameoffile = "";
 	    	  String gotcsv = db.getCsv(1);
 	    	  boolean mediaWriteable = assertMedia();
 	    	  if(mediaWriteable) {
-	    		  fileWrite (gotcsv, 1);
-	    		  shareMedia();
+	    		  nameoffile = fileWrite (gotcsv, 1);
+	    		  shareMedia(nameoffile);
 	    	  }
 	    	  
 	      }
@@ -160,8 +173,10 @@ private void addExportButtonClickListener() {
 		
 	     	
 
+ 
 
-private void addListClickListeners() {
+
+  private void addListClickListeners() {
     // Short press listener
     classSelectList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -186,37 +201,42 @@ private void addListClickListeners() {
 
     // Long press listener
     classSelectList.setOnItemLongClickListener(new OnItemLongClickListener() {
-
       public boolean onItemLongClick(AdapterView<?> parent, View view,
           int position, long id) {
         final MenuObject x = (MenuObject) parent.getItemAtPosition(position);
-        AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-        alert.setTitle("");
-        alert.setMessage("Delete this class?");
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            db.deleteClass(x.classId);
+        final View itemView = view;
+        AlertDialog.Builder classOptionsAlert = new AlertDialog.Builder(view.getContext());
 
-            if (getCurrentClassId() == x.classId) {
-              setCurrentClassId(x.classId);
+        PopupMenu popup = new PopupMenu(me, view);
+        popup.inflate(R.menu.popup_menu);
+        popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+          public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+            case R.id.export_data:
+              String gotcsv = db.getCsv(x.classId);
+              
+              boolean mediaWriteable = assertMedia();
+              if(mediaWriteable) {
+                fileWrite (gotcsv);
+              }
+
+              return true;
+
+            case R.id.delete_class:
+              showClassDeleteDialog(itemView.getContext(), x.classId);
+              return true;
             }
-            populateClassList();
+            return false;
           }
         });
 
-        alert.setNegativeButton("Cancel",
-            new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int whichButton) {
-            // Canceled.
-          }
-        });
-
-        alert.show();
-
+        popup.show();
         return true;
       }
     });
   }
+
+
 
   private void addNewClassClickListener() {
     Button newClassButton = (Button) findViewById(R.id.class_add_button);
@@ -225,6 +245,31 @@ private void addListClickListeners() {
         showNewClassDialog();
       }
     });
+  }
+
+  private void showClassDeleteDialog(Context context, final int classid) {
+    AlertDialog.Builder deleteClassAlert = new AlertDialog.Builder(context);
+    deleteClassAlert.setTitle("");
+    deleteClassAlert.setMessage("Delete this class?");
+    deleteClassAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+        db.deleteClass(classid);
+
+        if (getCurrentClassId() == classid) {
+          setCurrentClassId(classid);
+        }
+        populateClassList();
+      }
+    });
+
+    deleteClassAlert.setNegativeButton("Cancel",
+        new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int whichButton) {
+        // Canceled.
+      }
+    });
+
+    deleteClassAlert.show();
   }
 
   private void addPinClickListener() {

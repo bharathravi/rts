@@ -16,6 +16,8 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,34 +74,18 @@ public class Protector {
       final TextView pinText = new TextView(context);
       pinText.setText("New Pin:");
       
-      // Set an EditText view to get user input
-      final EditText pin = new EditText(context);
-      pin.setTransformationMethod(PasswordTransformationMethod.getInstance());
-      pin.setGravity(Gravity.CENTER | Gravity.BOTTOM);
-      pin.setEms(6);
+     
+      LayoutInflater inflater = (LayoutInflater)context.getSystemService
+          (Context.LAYOUT_INFLATER_SERVICE);
+      View view = inflater.inflate(R.layout.newpin_dialog, null);
       
-      final TextView repinText = new TextView(context);
-      repinText.setText("Re-enter Pin:");
-      
-      final EditText reenter_pin = new EditText(context);
-      reenter_pin.setTransformationMethod(PasswordTransformationMethod.getInstance());
-      reenter_pin.setGravity(Gravity.CENTER | Gravity.BOTTOM);
-      reenter_pin.setEms(6);
+      alert.setView(view);
+      //alert.setView(layout);  // Set an EditText view to get user input
+      final EditText pin = (EditText) view.findViewById(R.id.new_pin1); 
+      final EditText reenter_pin = (EditText) view.findViewById(R.id.reenter_pin1);
+     
             
-      LinearLayout layout1 = new LinearLayout(context);
-      layout1.setGravity(Gravity.TOP);
-      layout1.addView(pinText);
-      layout1.addView(pin);
       
-      LinearLayout layout2 = new LinearLayout(context);
-      layout1.setGravity(Gravity.BOTTOM);
-      layout2.addView(repinText);
-      layout2.addView(reenter_pin);
-            
-      LinearLayout layout = new LinearLayout(context);
-      layout.addView(layout1);
-      layout.addView(layout2);
-      alert.setView(layout);
       alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int whichButton) {
           String value1 = pin.getText().toString();
@@ -138,15 +124,17 @@ public class Protector {
       try {
         Integer.parseInt(value1);
       } catch (NumberFormatException e) {
-        Toast.makeText(context, "Pin must be a 6 digit number!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Pin must be a Number!", Toast.LENGTH_LONG).show();
         return false;
       }
       
       if (value1.equals(value2)) {
         return true;
+      } else {
+        Toast.makeText(context, "Pins entered did not match!", Toast.LENGTH_LONG).show();
+        return false;
       }
-      
-      return false;          
+                 
     }
     
     public static boolean savePin(final SharedPreferences preferences, String pin) {
@@ -173,6 +161,8 @@ public class Protector {
 
       // Set an EditText view to get user input
       final EditText input = new EditText(context);
+      input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+      input.setEms(6);
       
       alert.setView(input);
       alert.setCancelable(false);
