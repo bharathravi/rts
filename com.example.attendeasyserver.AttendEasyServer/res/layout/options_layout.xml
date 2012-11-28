@@ -92,6 +92,7 @@
             android:id="@+id/class_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="0.52"
             android:shadowColor="#000000"
             android:shadowDx="1"
             android:shadowDy="1"
@@ -102,12 +103,13 @@
             android:id="@+id/edit_student_button"
             android:layout_width="143dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.46"
             android:shadowColor="#000000"
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
             android:text="Edit Student" />
-        
+
     </LinearLayout>
     
     <Button
