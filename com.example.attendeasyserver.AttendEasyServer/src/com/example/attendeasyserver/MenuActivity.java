@@ -91,6 +91,7 @@ public class MenuActivity extends Activity {
     addListClickListeners();
     addNewClassClickListener();
     addPinClickListener();    
+    addEditStudentClickListener();
   }
 
   private boolean assertMedia() {
@@ -119,61 +120,37 @@ public class MenuActivity extends Activity {
 
 
   private String fileWrite(String gotcsv, int classID) {
-	  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	   //get current date time with Date()
-	   Date date = new Date(); 
-	   String file_name = "";
-	    file_name = file_name + "_" +  dateFormat.format(date);
-		File file = new File(getExternalFilesDir(null), file_name);
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm");
+    //get current date time with Date()
+    Date date = new Date(); 
+    String file_name = classID + "_" +  dateFormat.format(date) + ".csv";
+    File file = new File(getExternalFilesDir(null), file_name);
+    try {
 
-	    try {
-	    	
-	        OutputStream os = new FileOutputStream(file);
-	        byte[] data = gotcsv.getBytes();
-	        os.write(data);
-	        os.close();
-	    } catch (IOException e) {
-	    	Toast.makeText(me, "Writing to file failed.", Toast.LENGTH_LONG).show();
-	    }
-		
-	    return file_name;
-}
-   
+      OutputStream os = new FileOutputStream(file);
+      byte[] data = gotcsv.getBytes();
+      Toast.makeText(me, gotcsv, Toast.LENGTH_LONG).show();
+      os.write(data);
+      os.close();
+      Toast.makeText(me, "File written to " + file.getCanonicalPath(), Toast.LENGTH_LONG).show();
+    } catch (IOException e) {
+      Toast.makeText(me, "Writing to file failed.", Toast.LENGTH_LONG).show();
+    }
+
+    return file_name;
+  }
+
   private void shareMedia(String fileName) {
-	
-	  File file = new File(getExternalFilesDir(null), fileName);
-	  
-	  Uri uriToFile = Uri.fromFile(file);
-	  Intent shareIntent = new Intent();
-	  shareIntent.setAction(Intent.ACTION_SEND);
-	  shareIntent.putExtra(Intent.EXTRA_STREAM, uriToFile);
-	  shareIntent.setType("*/*");
-	  startActivity(Intent.createChooser(shareIntent, "get-file"));
-	  
-	  
-    } 
-  
-  
-private void addExportButtonClickListener() {
-	  Button newClassButton = (Button) findViewById(R.id.export_button);
-	    newClassButton.setOnClickListener(new OnClickListener() {
-	      public void onClick(View v) {
-	    	  String nameoffile = "";
-	    	  String gotcsv = db.getCsv(1);
-	    	  boolean mediaWriteable = assertMedia();
-	    	  if(mediaWriteable) {
-	    		  nameoffile = fileWrite (gotcsv, 1);
-	    		  shareMedia(nameoffile);
-	    	  }
-	    	  
-	      }
-	    });
-}
-	    
-		
-	     	
 
- 
+    File file = new File(getExternalFilesDir(null), fileName);
+
+    Uri uriToFile = Uri.fromFile(file);
+    Intent shareIntent = new Intent();
+    shareIntent.setAction(Intent.ACTION_SEND);
+    shareIntent.putExtra(Intent.EXTRA_STREAM, uriToFile);
+    shareIntent.setType("*/*");
+    startActivity(Intent.createChooser(shareIntent, "Share Options"));
+  } 
 
 
   private void addListClickListeners() {
@@ -214,10 +191,11 @@ private void addExportButtonClickListener() {
             switch (item.getItemId()) {
             case R.id.export_data:
               String gotcsv = db.getCsv(x.classId);
-              
+
               boolean mediaWriteable = assertMedia();
               if(mediaWriteable) {
-                fileWrite (gotcsv);
+                String filename = fileWrite (gotcsv, x.classId);
+                shareMedia(filename);
               }
 
               return true;
@@ -287,6 +265,17 @@ private void addExportButtonClickListener() {
       }
     });
   }
+  
+  private void addEditStudentClickListener() {
+    Button editStudentButton = (Button) findViewById(R.id.edit_student_button);
+    editStudentButton.setOnClickListener(new OnClickListener() {
+      public void onClick(View v) {
+        Intent intent = new Intent(me, EditStudentActivity.class);
+        startActivity(intent);                
+      }
+    });
+  }
+
 
   @Override
   protected void onResume() {

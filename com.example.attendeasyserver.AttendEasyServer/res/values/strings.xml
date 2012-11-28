@@ -9,4 +9,5 @@
     <string name="class_spinner_text">Choose Class</string>
     
     <string name="add_new_class_string">Add New Class</string>
+    <string name="title_activity_edit_student">Search/Edit Student</string>
 </resources>

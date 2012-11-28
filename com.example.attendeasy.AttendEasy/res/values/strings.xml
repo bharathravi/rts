@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">AttendEasy</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="welcome">AttendEasy</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">AttendEasy</string>
 

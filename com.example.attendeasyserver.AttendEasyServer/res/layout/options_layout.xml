@@ -92,13 +92,21 @@
             android:id="@+id/class_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.38"
             android:shadowColor="#000000"
             android:shadowDx="1"
             android:shadowDy="1"
             android:shadowRadius="1"
             android:text="@string/add_new_class_string" />
 
+        <Button
+            android:id="@+id/edit_student_button"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:text="Edit Student" />
         
     </LinearLayout>
     

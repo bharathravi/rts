@@ -40,17 +40,17 @@ public class ServerMain extends Activity {
 
     infoText = (TextView) findViewById(R.id.infotext);
 
-    // this.deleteDatabase("attendeasy");
-    settings.edit().putInt(Constants.CURRENT_CLASS_SETTING, -1);
-    settings.edit().putString(Constants.SAVED_PIN, "");
-    settings.edit().commit();
+   //  this.deleteDatabase("attendeasy");
+   // settings.edit().putInt(Constants.CURRENT_CLASS_SETTING, -1);
+ // settings.edit().putString(Constants.SAVED_PIN, "");
+   // settings.edit().commit();
 
     db = new Database(this);
 
     String className = db.getClassName(getCurrentClassId());
     if (className.isEmpty()) {
       infoText.setText(Constants.CLASS_STRING + ": " + Constants.NONE_STRING);
-    } else {
+    }    else {
       infoText.setText(Constants.CLASS_STRING + ": " + className);
     }
 

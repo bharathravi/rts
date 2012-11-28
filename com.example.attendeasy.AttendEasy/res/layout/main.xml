@@ -1,16 +1,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@drawable/clientbackround">
+    android:layout_height="match_parent"
+    android:background="@drawable/clientbackround" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:text="AttendEasy"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="20pt" />
 
     <TextView
         android:id="@+id/infotext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world"
+        android:layout_marginTop="76dp"
+        android:padding="10pt"
+        android:text="Tap your phone with an AttendEasy Server to register attendance!"
         tools:context=".MainActivity" />
 
 </RelativeLayout>

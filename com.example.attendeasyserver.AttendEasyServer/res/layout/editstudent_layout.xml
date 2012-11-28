@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/wavy_blue_background2"
+    android:columnCount="3"
+    android:orientation="vertical" >
+
+    
+
+    <TextView
+        android:id="@+id/search_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="29dp"
+        android:text="Search by IMEI/GTID"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/search_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_label"
+        android:layout_alignLeft="@+id/search_label"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/search_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/search_text"
+        android:layout_toRightOf="@+id/search_text"
+        android:text="Go" />
+    
+    <TextView
+        android:id="@+id/search_results_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_text"
+        android:layout_alignLeft="@+id/search_label"
+        android:layout_marginTop="35dp"
+        android:text="Search Results:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/gtid_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_results_label"
+        android:layout_marginTop="27dp"
+        android:layout_alignLeft="@+id/search_label"
+        android:text="GTID:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/gtid_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/gtid_label"
+        android:layout_alignTop="@+id/gtid_label"
+        android:ems="10" />
+    
+    
+    <TextView
+        android:id="@+id/imei_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/gtid_label"
+        android:layout_below="@+id/gtid_label"
+        android:layout_marginTop="27dp"
+        
+        android:text="IMEI:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <EditText
+        android:id="@+id/imei_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imei_label"
+        android:layout_alignTop="@+id/imei_label"
+        android:ems="10" />
+    
+    <Button
+        android:id="@+id/save_student_button"    
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imei_label"
+        android:layout_alignLeft="@+id/imei_label"
+        android:layout_marginTop="27dp"
+        android:text="Save Changes" />
+    
+    
+</RelativeLayout>

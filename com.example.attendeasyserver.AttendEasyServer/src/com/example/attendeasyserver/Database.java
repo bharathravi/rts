@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -37,7 +38,7 @@ public class Database extends SQLiteOpenHelper {
 			"(" + classIdColumn + " INTEGER NOT NULL, " 
     		+ imeiColumn + " varchar(50) NOT NULL, "
 			+ gtidColumn + " varchar(50) NOT NULL, "
-			+ "PRIMARY KEY (" + classIdColumn + ", " + imeiColumn + "),"
+			+ "PRIMARY KEY (" + classIdColumn + ", " + gtidColumn + "),"
 			+ "FOREIGN KEY(" + classIdColumn+ ") REFERENCES " + CLASSES_TABLE_NAME + "(" +  classIdColumn + ") ON DELETE CASCADE ON UPDATE CASCADE)";
 	
 	private String createAttendanceTableCommand = "CREATE TABLE " + ATTENDANCE_TABLE_NAME + 
@@ -112,13 +113,43 @@ public class Database extends SQLiteOpenHelper {
 	    int value = cursor.getCount();
 	    cursor.close();
 		if (value == 1) {						
-			return true;			
+			return true;		
 		} else {
 			return false;
 		}
 	}
 	
-	String getCsv(int classId) {
+	Pair<String, String> searchForStudent(String imeiOrGtid) 
+	    throws StudentNotFoundException, TooManyResultsException {
+	  Pair<String, String> pair = new Pair<String, String>("", "");
+	  
+	  SQLiteDatabase db = getReadableDatabase();   
+	  
+    Cursor cursor = db.rawQuery("SELECT * FROM " + STUDENTS_TABLE_NAME 
+        + " WHERE " + imeiColumn + " LIKE '" + imeiOrGtid + "' " +
+        " or " + gtidColumn + "=" + imeiOrGtid, null);
+
+    if (!cursor.moveToFirst()) {
+      cursor.close();
+      throw new StudentNotFoundException();
+    }
+    
+    int count = cursor.getCount();
+    
+    if (count == 1) {
+      int imeiColumnId = cursor.getColumnIndex(imeiColumn);
+      int gtidColumnId = cursor.getColumnIndex(gtidColumn);
+      
+      pair = Pair.create(cursor.getString(imeiColumnId), 
+          cursor.getString(gtidColumnId));
+    } else {
+      throw new TooManyResultsException();
+    }
+	  
+	  return pair;  
+	}
+	
+	public String getCsv(int classId) {
 		SQLiteDatabase db = getReadableDatabase();		
 		Cursor cursor = db.rawQuery("SELECT * FROM " + STUDENTS_TABLE_NAME 
 				+ " WHERE " + classIdColumn + "=" + classId, null);
@@ -142,8 +173,13 @@ public class Database extends SQLiteOpenHelper {
 				  
 				  if(cursor2.getCount() > 0) {
 					  do{
-						  String attendedDate = cursor2.getString(dateID);
-						  csv += "," + attendedDate;
+						  Long attendedDateMillis = cursor2.getLong(dateID);
+						  
+						  Time time = new Time();
+						  time.set(attendedDateMillis);
+						  
+						  
+						  csv += "," + time.format2445();
 					  }
 					  while(cursor2.moveToNext());					  					  
 				  }
@@ -252,4 +288,19 @@ public class Database extends SQLiteOpenHelper {
 		cursor.close();
 		return count;
 	}
+
+  public void updateStudent(String oldImeiOrGtid, String imei, String gtid) {
+    SQLiteDatabase db = getWritableDatabase();
+    ContentValues values = new ContentValues();
+    values.put(imeiColumn, imei);
+    values.put(gtidColumn, gtid);
+    
+//    Cursor cursor = db.rawQuery("UPDATE " + STUDENTS_TABLE_NAME +  " SET " + imeiColumn + "='" + imei + "', " + 
+//    gtidColumn + "='" + gtid + "' WHERE " + imeiColumn + " LIKE '" + oldImeiOrGtid + "' or " + gtidColumn + " LIKE '"
+//    + oldImeiOrGtid + "' ", null);
+    
+    db.update(STUDENTS_TABLE_NAME, values, imeiColumn + "=? or " + gtidColumn + "=?", 
+        new String[]{oldImeiOrGtid, oldImeiOrGtid});
+    //cursor.close();
+  }
 }
