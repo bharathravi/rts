@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="14dp"
         android:text="Button"
-         />
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/textView1"
